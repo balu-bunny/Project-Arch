@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+  pre_build:
+    commands:
+      - pip install -r requirements.txt
+  build:
+    commands:
+      - zip -r my-python-app.zip src/
+  post_build:
+    commands:
+      - aws s3 cp my-python-app.zip s3://${S3_BUCKET}/lambda/my-python-app.zip
+
+artifacts:
+  files:
+    - template.yml
+    - my-python-app.zip
